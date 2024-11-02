@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>examples2d · SimplexGridFactory.jl</title><meta name="title" content="examples2d · SimplexGridFactory.jl"/><meta property="og:title" content="examples2d · SimplexGridFactory.jl"/><meta property="twitter:title" content="examples2d · SimplexGridFactory.jl"/><meta name="description" content="Documentation for SimplexGridFactory.jl."/><meta property="og:description" content="Documentation for SimplexGridFactory.jl."/><meta property="twitter:description" content="Documentation for SimplexGridFactory.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">SimplexGridFactory.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../changes/">Changes</a></li><li><a class="tocitem" href="../../api/">API</a></li><li><span class="tocitem">Examples</span><ul><li class="is-active"><a class="tocitem" href>examples2d</a><ul class="internal"><li><a class="tocitem" href="#Domain-triangulation"><span>Domain triangulation</span></a></li><li><a class="tocitem" href="#Triangulation-with-size-control-and-boundary-markers"><span>Triangulation with size control and boundary markers</span></a></li><li><a class="tocitem" href="#Triangulation-with-subregions"><span>Triangulation with subregions</span></a></li><li><a class="tocitem" href="#Direct-specification-of-input-arrays"><span>Direct specification of input arrays</span></a></li><li><a class="tocitem" href="#Local-refinement"><span>Local refinement</span></a></li><li><a class="tocitem" href="#Domain-with-holes"><span>Domain with holes</span></a></li><li><a class="tocitem" href="#Remeshing-another-grid"><span>Remeshing another grid</span></a></li><li><a class="tocitem" href="#Glueing-in-another-grid"><span>Glueing in another grid</span></a></li></ul></li><li><a class="tocitem" href="../examples3d/">examples3d</a></li></ul></li><li><span class="tocitem">Notebooks</span><ul><li><a class="tocitem" href="../../pluto_examples/gridgenvis/">gridgenvis</a></li><li><a class="tocitem" href="../../pluto_examples/cylinder/">cylinder</a></li></ul></li><li><a class="tocitem" href="../../internals/">Internals</a></li><li><a class="tocitem" href="../../allindex/">API Index</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>examples2d</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>examples2d</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/WIAS-PDELib/SimplexGridFactory.jl" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="2D-Triangulations"><a class="docs-heading-anchor" href="#2D-Triangulations">2D Triangulations</a><a id="2D-Triangulations-1"></a><a class="docs-heading-anchor-permalink" href="#2D-Triangulations" title="Permalink"></a></h1><p>These examples can be loaded into Julia (Revise.jl recommended)</p><p>These examples return either a <code>SimplexGridBuilder</code> struct which can be turned into a grid by calling <code>simplexgrid</code>(builder), or just an ExtendableGrid with default simplex grid data.</p><p>The control flags for <a href="https://github.com/JuliaGeometry/Triangulate.jl">Triangle</a> are created based on default options provided by this module which try to ensure &quot;good&quot; grids for FEM and FVM computations. These are documented in <code>SimplexGridFactory.default_options</code> Occasional <code>options!</code> statements in the examples overwrite these defaults.</p><p>This test code is released under the license conditions of Triangulate.jl</p><pre><code class="language-julia hljs">using SimplexGridFactory
+using ExtendableGrids
+using LinearAlgebra
+using Triangulate</code></pre><h2 id="Domain-triangulation"><a class="docs-heading-anchor" href="#Domain-triangulation">Domain triangulation</a><a id="Domain-triangulation-1"></a><a class="docs-heading-anchor-permalink" href="#Domain-triangulation" title="Permalink"></a></h2><p>Here we just describe a domain as a polygon and mesh it.</p><pre><code class="language-julia hljs">function triangulation_of_domain()
+    builder = SimplexGridBuilder(; Generator = Triangulate)
+
+    p1 = point!(builder, 0, 0)
+    p2 = point!(builder, 1, 0)
+    p3 = point!(builder, 1, 2)
+    p4 = point!(builder, 0, 1)
+    p5 = point!(builder, -1, 2)
+
+    facet!(builder, p1, p2)
+    facet!(builder, p2, p3)
+    facet!(builder, p3, p4)
+    facet!(builder, p4, p5)
+    facet!(builder, p5, p1)
+
+    builder
+end</code></pre><p><img src="../triangulation_of_domain.png" alt/></p><h2 id="Triangulation-with-size-control-and-boundary-markers"><a class="docs-heading-anchor" href="#Triangulation-with-size-control-and-boundary-markers">Triangulation with size control and boundary markers</a><a id="Triangulation-with-size-control-and-boundary-markers-1"></a><a class="docs-heading-anchor-permalink" href="#Triangulation-with-size-control-and-boundary-markers" title="Permalink"></a></h2><p>The previous example was a little bit bland. We miss:</p><ul><li>size control for the triangles</li><li>differently marking of boundary parts</li></ul><pre><code class="language-julia hljs">function nicer_triangulation_of_domain()
+    builder = SimplexGridBuilder(; Generator = Triangulate)
+
+    p1 = point!(builder, 0, 0)
+    p2 = point!(builder, 1, 0)
+    p3 = point!(builder, 1, 2)
+    p4 = point!(builder, 0, 1)
+    p5 = point!(builder, -1, 2)
+
+    facetregion!(builder, 1)
+    facet!(builder, p1, p2)
+    facet!(builder, p2, p3)
+    facetregion!(builder, 2)
+    facet!(builder, p3, p4)
+    facet!(builder, p4, p5)
+    facetregion!(builder, 3)
+    facet!(builder, p5, p1)
+
+    options!(builder; maxvolume = 0.01)
+
+    builder
+end</code></pre><p><img src="../nicer_triangulation_of_domain.png" alt/></p><h2 id="Triangulation-with-subregions"><a class="docs-heading-anchor" href="#Triangulation-with-subregions">Triangulation with subregions</a><a id="Triangulation-with-subregions-1"></a><a class="docs-heading-anchor-permalink" href="#Triangulation-with-subregions" title="Permalink"></a></h2><p>Here we create different subregions and apply the maxvolume constraint to the subregions</p><pre><code class="language-julia hljs">function triangulation_of_domain_with_subregions()
+    builder = SimplexGridBuilder(; Generator = Triangulate)
+
+    p1 = point!(builder, 0, 0)
+    p2 = point!(builder, 1, 0)
+    p3 = point!(builder, 1, 2)
+    p4 = point!(builder, 0, 1)
+    p5 = point!(builder, -1, 2)
+
+    facetregion!(builder, 1)
+    facet!(builder, p1, p2)
+    facet!(builder, p2, p3)
+    facetregion!(builder, 2)
+    facet!(builder, p3, p4)
+    facet!(builder, p4, p5)
+    facetregion!(builder, 3)
+    facet!(builder, p5, p1)
+
+    facetregion!(builder, 4)
+    facet!(builder, p1, p4)
+
+    cellregion!(builder, 2)
+    maxvolume!(builder, 0.1)
+    regionpoint!(builder, -0.1, 0.5)
+
+    cellregion!(builder, 3)
+    maxvolume!(builder, 0.01)
+    regionpoint!(builder, 0.2, 0.2)
+
+    builder
+end</code></pre><p><img src="../triangulation_of_domain_with_subregions.png" alt/></p><h2 id="Direct-specification-of-input-arrays"><a class="docs-heading-anchor" href="#Direct-specification-of-input-arrays">Direct specification of input arrays</a><a id="Direct-specification-of-input-arrays-1"></a><a class="docs-heading-anchor-permalink" href="#Direct-specification-of-input-arrays" title="Permalink"></a></h2><p>Of course we can specify the input for Triangle directly. The aim of SimplexBuilder is to avoid the tedious and error prone counting connected with this approach.</p><pre><code class="language-julia hljs">function direct_square(Generator = Triangulate)
+    simplexgrid(Generator;
+                points = [0 0; 0 1; 1 1; 1 0]&#39;,
+                bfaces = [1 2; 2 3; 3 4; 4 1]&#39;,
+                bfaceregions = [1, 2, 3, 4],
+                regionpoints = [0.5 0.5;]&#39;,
+                regionnumbers = [1],
+                regionvolumes = [0.01])
+end</code></pre><p><img src="../direct_square.png" alt/></p><h2 id="Local-refinement"><a class="docs-heading-anchor" href="#Local-refinement">Local refinement</a><a id="Local-refinement-1"></a><a class="docs-heading-anchor-permalink" href="#Local-refinement" title="Permalink"></a></h2><p>We can interface to Triangle&#39;s unsuitable mechanism</p><pre><code class="language-julia hljs">function square_localref()
+    builder = SimplexGridBuilder(; Generator = Triangulate)
+    cellregion!(builder, 1)
+    maxvolume!(builder, 0.01)
+    regionpoint!(builder, 0.5, 0.5)
+
+    p1 = point!(builder, 0, 0)
+    p2 = point!(builder, 1, 0)
+    p3 = point!(builder, 1, 1)
+    p4 = point!(builder, 0, 1)
+
+    facetregion!(builder, 1)
+    facet!(builder, p1, p2)
+    facetregion!(builder, 2)
+    facet!(builder, p2, p3)
+    facetregion!(builder, 3)
+    facet!(builder, p3, p4)
+    facetregion!(builder, 4)
+    facet!(builder, p4, p1)
+
+    refinement_center = [0.5, 0.5]
+    function unsuitable(x1, y1, x2, y2, x3, y3, area)
+        bary = [(x1 + x2 + x3) / 3, (y2 + y2 + y3) / 3]
+        dist = norm(bary - refinement_center)
+        if area &gt; 0.01 * dist
+            return 1
+        else
+            return 0
+        end
+    end
+    options!(builder; unsuitable = unsuitable)
+    builder
+end</code></pre><p><img src="../square_localref.png" alt/></p><h2 id="Domain-with-holes"><a class="docs-heading-anchor" href="#Domain-with-holes">Domain with holes</a><a id="Domain-with-holes-1"></a><a class="docs-heading-anchor-permalink" href="#Domain-with-holes" title="Permalink"></a></h2><p>We can generate domains with holes. This at once shall demonstrate how the chosen API approach eases bookeeping of features added to the geometry description</p><pre><code class="language-julia hljs">function swiss_cheese_2d()
+    function circlehole!(builder, center, radius; n = 20)
+        points = [point!(builder, center[1] + radius * sin(t), center[2] + radius * cos(t)) for t in range(0, 2π; length = n)]
+        for i = 1:(n - 1)
+            facet!(builder, points[i], points[i + 1])
+        end
+        facet!(builder, points[end], points[1])
+        holepoint!(builder, center)
+    end
+
+    builder = SimplexGridBuilder(; Generator = Triangulate)
+    cellregion!(builder, 1)
+    maxvolume!(builder, 0.1)
+    regionpoint!(builder, 0.1, 0.1)
+
+    p1 = point!(builder, 0, 0)
+    p2 = point!(builder, 10, 0)
+    p3 = point!(builder, 10, 10)
+    p4 = point!(builder, 0, 10)
+
+    facetregion!(builder, 1)
+    facet!(builder, p1, p2)
+    facet!(builder, p2, p3)
+    facet!(builder, p3, p4)
+    facet!(builder, p4, p1)
+
+    holes = [8.0 4.0;
+             1.0 2.0;
+             8.0 9.0;
+             3.0 4.0;
+             4.0 6.0;
+             7.0 9.0;
+             4.0 7.0;
+             7.0 5.0;
+             2.0 1.0;
+             4.0 1.0;
+             4.0 8.0;
+             2.0 8.0;
+             3.0 6.0;
+             4.0 9.0;
+             9.0 1.0;
+             9.0 1.0;
+             6.0 9.0;
+             8.0 9.0;
+             3.0 5.0;
+             1.0 4.0]&#39;
+
+    radii = [0.15, 0.15, 0.1, 0.35, 0.2, 0.3, 0.1, 0.4, 0.1, 0.4, 0.4, 0.15, 0.2, 0.2, 0.2, 0.35, 0.15, 0.25, 0.15, 0.25]
+
+    for i = 1:length(radii)
+        facetregion!(builder, i + 1)
+        circlehole!(builder, holes[:, i], radii[i])
+    end
+
+    builder
+end</code></pre><p><img src="../swiss_cheese_2d.png" alt/></p><h2 id="Remeshing-another-grid"><a class="docs-heading-anchor" href="#Remeshing-another-grid">Remeshing another grid</a><a id="Remeshing-another-grid-1"></a><a class="docs-heading-anchor-permalink" href="#Remeshing-another-grid" title="Permalink"></a></h2><p>The <code>bregions!</code> method allows to use another grid as geometry description</p><pre><code class="language-julia hljs">function remesh_2d()
+    b = SimplexGridBuilder(; Generator = Triangulate)
+    X=0:0.1:1
+    grid1 = simplexgrid(X, X)
+    bregions!(b,grid1)
+    simplexgrid(b,maxvolume=0.01)
+end</code></pre><p><img src="../remesh_2d.png" alt/></p><h2 id="Glueing-in-another-grid"><a class="docs-heading-anchor" href="#Glueing-in-another-grid">Glueing in another grid</a><a id="Glueing-in-another-grid-1"></a><a class="docs-heading-anchor-permalink" href="#Glueing-in-another-grid" title="Permalink"></a></h2><p>The <code>bregions!</code> method allows to extract parts of the geometry description from an already existing grid.</p><pre><code class="language-julia hljs">function glue_2d()
+    b = SimplexGridBuilder(; Generator = Triangulate)
+
+    h = 0.25
+    X = 0:h:10
+    Y = 0:h:4
+
+    grid1 = simplexgrid(X, Y)
+    bfacemask!(grid1, [0, 2], [10, 2], 7)
+    cellmask!(grid1, [0, 0], [10, 2], 2)
+
+    xmin = -2
+    x0min = 0
+    x0max = 10
+    xmax = 12
+    y0min = 0
+    ymin = -2
+    y0max = 4
+    ymax = 6
+    facetregion!(b, 8)
+    facet!(b, (xmin, ymin), (xmax, ymin))
+    facet!(b, (xmax, ymin), (xmax, 2))
+    facet!(b, (xmax, 2), (xmax, ymax))
+    facet!(b, (xmin, ymax), (xmax, ymax))
+    facet!(b, (xmin, ymin), (xmin, 2))
+    facet!(b, (xmin, 2), (xmin, ymax))
+
+    facetregion!(b, 7)
+    facet!(b, (x0min, 2), (xmin, 2))
+    facet!(b, (x0max, 2), (xmax, 2))
+
+    cellregion!(b, 1)
+    regionpoint!(b, 5, 5)
+
+    cellregion!(b, 2)
+    regionpoint!(b, 5, -1)
+
+    holepoint!(b, 5, 2)
+
+    bregions!(b, grid1, 1:6)
+    grid2 = simplexgrid(b; maxvolume = 0.6)
+    grid2 = glue(grid1, grid2)
+end</code></pre><p><img src="../glue_2d.png" alt/></p><p>Plot generation</p><pre><code class="language-julia hljs">using GridVisualize
+function generateplots(picdir; Plotter = nothing)
+    if isdefined(Plotter, :Makie)
+        size = (600, 300)
+        Plotter.activate!(; type = &quot;png&quot;, visible = false)
+
+        p = builderplot(triangulation_of_domain(); Plotter, size)
+        Plotter.save(joinpath(picdir, &quot;triangulation_of_domain.png&quot;),p)
+
+        p = builderplot(nicer_triangulation_of_domain(); Plotter, size)
+        Plotter.save(joinpath(picdir, &quot;nicer_triangulation_of_domain.png&quot;),p)
+
+        p = builderplot(triangulation_of_domain_with_subregions(); Plotter, size)
+        Plotter.save(joinpath(picdir, &quot;triangulation_of_domain_with_subregions.png&quot;),p)
+
+        p = builderplot(square_localref(); Plotter, size)
+        Plotter.save(joinpath(picdir, &quot;square_localref.png&quot;),p)
+
+        p = gridplot(direct_square(); Plotter, size)
+        Plotter.save(joinpath(picdir, &quot;direct_square.png&quot;),p)
+
+        p = builderplot(swiss_cheese_2d(); Plotter, size)
+        Plotter.save(joinpath(picdir, &quot;swiss_cheese_2d.png&quot;),p)
+
+        p = gridplot(remesh_2d(); Plotter, size)
+        Plotter.save(joinpath(picdir, &quot;remesh_2d.png&quot;),p)
+
+        p = gridplot(glue_2d(); Plotter, size)
+        Plotter.save(joinpath(picdir, &quot;glue_2d.png&quot;),p)
+    end
+end</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../api/">« API</a><a class="docs-footer-nextpage" href="../examples3d/">examples3d »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.7.0 on <span class="colophon-date" title="Saturday 2 November 2024 23:34">Saturday 2 November 2024</span>. Using Julia version 1.11.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
