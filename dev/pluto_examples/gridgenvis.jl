@@ -30,9 +30,9 @@ end;
 md"""
 # Grid generation and visualization in PDELib.jl
 
-This notebook shows how to perform grid creation and visualization with the assistance of the packages [ExtendableGrids.jl](https://github.com/j-fu/ExtendableGrids.jl) and [SimplexGridFactory.jl](https://github.com/j-fu/SimplexGridFactory.jl) which are part of the  [PDELib.jl](https://github.com/WIAS-BERLIN/PDElib.jl) meta package.
+This notebook shows how to perform grid creation and visualization with the assistance of the packages [ExtendableGrids.jl](https://github.com/WIAS-PDELib/ExtendableGrids.jl) and [SimplexGridFactory.jl](https://github.com/WIAS-PDELib/SimplexGridFactory.jl) which are part of the  [PDELib.jl](https://github.com/WIAS-BERLIN/PDElib.jl) meta package.
 
-Visualization in this notebook is done using the [GridVisualize.jl](https://github.com/j-fu/GridVisualize.jl) package.
+Visualization in this notebook is done using the [GridVisualize.jl](https://github.com/WIAS-PDELib/GridVisualize.jl) package.
 """
 
 # ╔═╡ 47103e8f-a4ff-46ed-a632-572a2e194a50
@@ -40,7 +40,7 @@ md"""
 ## 1D grids
 
 1D grids are created just from arrays of montonically increasing  coordinates
-using the [simplexgrid](https://j-fu.github.io/ExtendableGrids.jl/stable/simplexgrid/#ExtendableGrids.simplexgrid-Tuple{AbstractVector{T}%20where%20T}) method.
+using the [simplexgrid](https://WIAS-PDELib.github.io/ExtendableGrids.jl/stable/simplexgrid/#ExtendableGrids.simplexgrid-Tuple{AbstractVector{T}%20where%20T}) method.
 """
 
 # ╔═╡ 93a0c45e-d6a3-415a-a82c-e4f7e2a09d22
@@ -73,7 +73,7 @@ g1.components
 
 # ╔═╡ 28e2e3b0-c168-481b-b467-29e6a5407431
 md"""
-Components can be accessed via `[ ]`. In fact the keys in the dictionary of components are [types](https://j-fu.github.io/ExtendableGrids.jl/stable/tdict/).
+Components can be accessed via `[ ]`. In fact the keys in the dictionary of components are [types](https://WIAS-PDELib.github.io/ExtendableGrids.jl/stable/tdict/).
 """
 
 # ╔═╡ f04017d7-1c55-4118-8467-1e134259e35d
@@ -209,7 +209,7 @@ g2d1.components
 md"""
 ### Unstructured grids
 
-For the triangulation of unstructured grids, we use the mesh generator Triangle via the [Triangulate.jl](https://github.com/JuliaGeometry/Triangulate.jl)  and [SimplexGridFactory.jl](https://github.com/j-fu/SimplexGridFactory.jl) packages.
+For the triangulation of unstructured grids, we use the mesh generator Triangle via the [Triangulate.jl](https://github.com/JuliaGeometry/Triangulate.jl)  and [SimplexGridFactory.jl](https://github.com/WIAS-PDELib/SimplexGridFactory.jl) packages.
 
 The later package exports the `SimplexGridBuilder` which shall help to simplify the creation of the input for `Triangulate`.
 """
