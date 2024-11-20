@@ -185,7 +185,7 @@ end
 # ## Domain with holes
 # We can generate domains with holes.
 # This at once shall demonstrate how the chosen 
-# API approach eases bookeeping of features added to the
+# API approach eases bookkeeping of features added to the
 # geometry description
 #
 function swiss_cheese_2d()

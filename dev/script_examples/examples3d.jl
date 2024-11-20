@@ -4,7 +4,7 @@
 #
 # These examples can be loaded into Julia (Revise.jl recommended)
 #
-# These examples retur an ExtendableGrid with default simplex grid data.
+# These examples return an ExtendableGrid with default simplex grid data.
 #
 # The control flags for [TetGen](https://github.com/JuliaGeometry/TetGen.jl)
 # are created based on default options
@@ -53,7 +53,7 @@ function tetrahedralization_of_cube()
 end
 # ![](tetrahedralization_of_cube.png)
 
-# ## Cube based on primitves
+# ## Cube based on primitives
 #
 # We can also use predefined primitives to combine geometries
 function tet_cube_with_primitives()

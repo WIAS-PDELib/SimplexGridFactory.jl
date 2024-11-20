@@ -62,7 +62,7 @@ md"""
 We see some  additional information:
 
 - `cellregion`: each grid cell (interval, triangle, tetrahedron) as an integer region marker attached 
-- `bfaceregion`: boundary faces (points, lines, triangles) have an interger boundary region marker attached
+- `bfaceregion`: boundary faces (points, lines, triangles) have an integer boundary region marker attached
 
 
 We can also have a look into the grid structure:
@@ -107,7 +107,7 @@ md"""
 
 For this purpose, we just need to create arrays with the corresponding coordinate values. This can be done programmatically.
 
-Two support metods are provided for this purpose.
+Two support methods are provided for this purpose.
 """
 
 # ╔═╡ 2d5cb9e1-2d14-415e-b792-c3124901011d

@@ -31,7 +31,7 @@ begin
 	nref=2 # refinement level
 	rad=1 # outer radius
 	rad_inner=0.5*rad  # inner radius - transition between ring and inner part
-	hmin=rad*0.025*2.0^(-nref) # smalles radial grid size (close to wall)
+	hmin=rad*0.025*2.0^(-nref) # smallest radial grid size (close to wall)
 	hmax=rad*0.25*2.0^(-nref) # largest radial grid size
 	nang=15*2^(nref)|>ceil|>Int # resolution in angular direction
 	len=10 # length of cylinder
@@ -58,7 +58,9 @@ gridplot(g_ring)
 # ╔═╡ 79e6fa42-fdb2-4b99-a3ee-f5281a640fb2
 md"""
 In order to apply the Voronoi finite volume method we need a boundary conforming
-Delaunay grid which ensures that edge transfer coefficients are nonnegative. In 2D, this means that for interior edges, the sum of the angels opposite to an edge is less or equal than π. For edges situated at an interior or exterior boundary, the angle opposite to te edge should be less or equal than ``\frac{π}{2}``.   
+Delaunay grid which ensures that edge transfer coefficients are nonnegative. 
+In 2D, this means that for interior edges, the sum of the angels opposite to an edge is less or equal than π. 
+For edges situated at an interior or exterior boundary, the angle opposite to the edge should be less or equal than ``\frac{π}{2}``.   
 
 `VoronoiFVM.nondelaunay` returns the edges (as pairs of points) where this coefficient is negative due to a violation of the boundary conforming Delaunay property.
 """
@@ -93,7 +95,7 @@ begin
 		confdelaunay=true, # Ensure Delaunay property
 		minangle=1, # Minimum angle (degrees)
 		nosteiner=true, # Disallow new points at the boundary
-		quality=false, # Dont't care about grid quality, focus on Delaunay
+		quality=false, # Don't care about grid quality, focus on Delaunay
 	)
 end
 
