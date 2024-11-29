@@ -49,7 +49,7 @@ function tetrahedralization_of_cube()
     facetregion!(builder, 6)
     facet!(builder, p4, p1, p5, p8)
 
-    simplexgrid(builder; maxvolume = 0.001)
+    return simplexgrid(builder; maxvolume = 0.001)
 end
 # ![](tetrahedralization_of_cube.png)
 
@@ -80,28 +80,26 @@ function tet_cube_with_primitives()
     holepoint!(builder, (2, 7, 5))
     sphere!(builder, (2, 7, 5), 1.5; nref = 3)
 
-    simplexgrid(builder)
+    return simplexgrid(builder)
 end
 
 # ![](tet_cube_with_primitives.png)
 
 
-
 # ## Remeshing another grid
 #
 # The `bregions!` method allows to use another grid as geometry description
-# 
+#
 function remesh_3d()
     b = SimplexGridBuilder(; Generator = TetGen)
-    X=0:0.1:1
+    X = 0:0.1:1
     grid1 = simplexgrid(X, X, X)
-    bregions!(b,grid1)
-    simplexgrid(b,maxvolume=0.0001)
+    bregions!(b, grid1)
+    return simplexgrid(b, maxvolume = 0.0001)
 end
 #
 # ![](remesh_3d.png)
 #
-
 
 
 # ## Glue-in of existing grid
@@ -122,14 +120,14 @@ function glue_3d()
     grid3 = simplexgrid(X, X, Z)
     b = SimplexGridBuilder(; Generator = TetGen)
 
-    bregions!(b, g0, 1:6; facetregions = [8 for i = 1:7])
+    bregions!(b, g0, 1:6; facetregions = [8 for i in 1:7])
     cellregion!(b, 2)
     regionpoint!(b, (-1, -1, -1))
 
     bregions!(b, grid3, 1:6)
     holepoint!(b, (5, 5, 2))
     gouter = simplexgrid(b; maxvolume = 0.4, nosteiner = true)
-    glue(gouter, grid3; g1regions = 1:6, interface = 7)
+    return glue(gouter, grid3; g1regions = 1:6, interface = 7)
 end
 #
 # ![](glue_3d.png)
@@ -145,36 +143,35 @@ function stl_3d()
     b = SimplexGridBuilder(; Generator = TetGen)
     facetregion!(b, 2)
     model3d!(b, modelfile; scale = 1 / 100, translate = (1, 1, 1), cellregion = 3)
-    simplexgrid(b; maxvolume = 1.0e-2)
+    return simplexgrid(b; maxvolume = 1.0e-2)
 end
 #
 # ![](stl_3d.png)
 #
 
 
-
 # Plot generation
 using GridVisualize
 function generateplots(picdir; Plotter = nothing)
-    if isdefined(Plotter, :gcf)
-        size=(300,300)
+    return if isdefined(Plotter, :gcf)
+        size = (300, 300)
 
         Plotter.clf()
         gridplot(tetrahedralization_of_cube(); Plotter, size, zplane = 0.5)
         Plotter.savefig(joinpath(picdir, "tetrahedralization_of_cube.png"))
-        
+
         Plotter.clf()
         gridplot(tet_cube_with_primitives(); Plotter, size, zplane = 5, azim = 47, elev = 80, interior = false)
         Plotter.savefig(joinpath(picdir, "tet_cube_with_primitives.png"))
-        
+
         Plotter.clf()
         gridplot(glue_3d(); Plotter, size, azim = 0, elev = 15, xplanes = [5])
         Plotter.savefig(joinpath(picdir, "glue_3d.png"))
-       
+
         Plotter.clf()
         gridplot(remesh_3d(); Plotter, size, zplanes = [0.5])
         Plotter.savefig(joinpath(picdir, "remesh_3d.png"))
-       
+
         Plotter.clf()
         gridplot(stl_3d(); Plotter, size, xplanes = [5])
         Plotter.savefig(joinpath(picdir, "stl_3d.png"))

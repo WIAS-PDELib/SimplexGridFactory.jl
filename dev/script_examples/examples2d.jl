@@ -43,7 +43,7 @@ function triangulation_of_domain()
     facet!(builder, p4, p5)
     facet!(builder, p5, p1)
 
-    builder
+    return builder
 end
 
 #
@@ -56,7 +56,7 @@ end
 # We miss:
 # - size control for the triangles
 # - differently marking of boundary parts
-# 
+#
 function nicer_triangulation_of_domain()
     builder = SimplexGridBuilder(; Generator = Triangulate)
 
@@ -77,7 +77,7 @@ function nicer_triangulation_of_domain()
 
     options!(builder; maxvolume = 0.01)
 
-    builder
+    return builder
 end
 #
 # ![](nicer_triangulation_of_domain.png)
@@ -117,7 +117,7 @@ function triangulation_of_domain_with_subregions()
     maxvolume!(builder, 0.01)
     regionpoint!(builder, 0.2, 0.2)
 
-    builder
+    return builder
 end
 #
 # ![](triangulation_of_domain_with_subregions.png)
@@ -129,13 +129,15 @@ end
 # the tedious and error prone counting connected
 # with this approach.
 function direct_square(Generator = Triangulate)
-    simplexgrid(Generator;
-                points = [0 0; 0 1; 1 1; 1 0]',
-                bfaces = [1 2; 2 3; 3 4; 4 1]',
-                bfaceregions = [1, 2, 3, 4],
-                regionpoints = [0.5 0.5;]',
-                regionnumbers = [1],
-                regionvolumes = [0.01])
+    return simplexgrid(
+        Generator;
+        points = [0 0; 0 1; 1 1; 1 0]',
+        bfaces = [1 2; 2 3; 3 4; 4 1]',
+        bfaceregions = [1, 2, 3, 4],
+        regionpoints = [0.5 0.5;]',
+        regionnumbers = [1],
+        regionvolumes = [0.01]
+    )
 end
 #
 # ![](direct_square.png)
@@ -176,7 +178,7 @@ function square_localref()
         end
     end
     options!(builder; unsuitable = unsuitable)
-    builder
+    return builder
 end
 #
 # ![](square_localref.png)
@@ -184,18 +186,18 @@ end
 
 # ## Domain with holes
 # We can generate domains with holes.
-# This at once shall demonstrate how the chosen 
+# This at once shall demonstrate how the chosen
 # API approach eases bookkeeping of features added to the
 # geometry description
 #
 function swiss_cheese_2d()
     function circlehole!(builder, center, radius; n = 20)
         points = [point!(builder, center[1] + radius * sin(t), center[2] + radius * cos(t)) for t in range(0, 2π; length = n)]
-        for i = 1:(n - 1)
+        for i in 1:(n - 1)
             facet!(builder, points[i], points[i + 1])
         end
         facet!(builder, points[end], points[1])
-        holepoint!(builder, center)
+        return holepoint!(builder, center)
     end
 
     builder = SimplexGridBuilder(; Generator = Triangulate)
@@ -214,35 +216,37 @@ function swiss_cheese_2d()
     facet!(builder, p3, p4)
     facet!(builder, p4, p1)
 
-    holes = [8.0 4.0;
-             1.0 2.0;
-             8.0 9.0;
-             3.0 4.0;
-             4.0 6.0;
-             7.0 9.0;
-             4.0 7.0;
-             7.0 5.0;
-             2.0 1.0;
-             4.0 1.0;
-             4.0 8.0;
-             2.0 8.0;
-             3.0 6.0;
-             4.0 9.0;
-             9.0 1.0;
-             9.0 1.0;
-             6.0 9.0;
-             8.0 9.0;
-             3.0 5.0;
-             1.0 4.0]'
+    holes = [
+        8.0 4.0;
+        1.0 2.0;
+        8.0 9.0;
+        3.0 4.0;
+        4.0 6.0;
+        7.0 9.0;
+        4.0 7.0;
+        7.0 5.0;
+        2.0 1.0;
+        4.0 1.0;
+        4.0 8.0;
+        2.0 8.0;
+        3.0 6.0;
+        4.0 9.0;
+        9.0 1.0;
+        9.0 1.0;
+        6.0 9.0;
+        8.0 9.0;
+        3.0 5.0;
+        1.0 4.0
+    ]'
 
     radii = [0.15, 0.15, 0.1, 0.35, 0.2, 0.3, 0.1, 0.4, 0.1, 0.4, 0.4, 0.15, 0.2, 0.2, 0.2, 0.35, 0.15, 0.25, 0.15, 0.25]
 
-    for i = 1:length(radii)
+    for i in 1:length(radii)
         facetregion!(builder, i + 1)
         circlehole!(builder, holes[:, i], radii[i])
     end
 
-    builder
+    return builder
 end
 #
 # ![](swiss_cheese_2d.png)
@@ -252,13 +256,13 @@ end
 # ## Remeshing another grid
 #
 # The `bregions!` method allows to use another grid as geometry description
-# 
+#
 function remesh_2d()
     b = SimplexGridBuilder(; Generator = Triangulate)
-    X=0:0.1:1
+    X = 0:0.1:1
     grid1 = simplexgrid(X, X)
-    bregions!(b,grid1)
-    simplexgrid(b,maxvolume=0.01)
+    bregions!(b, grid1)
+    return simplexgrid(b, maxvolume = 0.01)
 end
 #
 # ![](remesh_2d.png)
@@ -268,7 +272,7 @@ end
 #
 # The `bregions!` method allows to extract parts of the geometry description from
 # an already existing grid.
-# 
+#
 function glue_2d()
     b = SimplexGridBuilder(; Generator = Triangulate)
 
@@ -310,43 +314,42 @@ function glue_2d()
 
     bregions!(b, grid1, 1:6)
     grid2 = simplexgrid(b; maxvolume = 0.6)
-    grid2 = glue(grid1, grid2)
+    return grid2 = glue(grid1, grid2)
 end
 #
 # ![](glue_2d.png)
 #
 
 
-
 # Plot generation
 using GridVisualize
 function generateplots(picdir; Plotter = nothing)
-    if isdefined(Plotter, :Makie)
+    return if isdefined(Plotter, :Makie)
         size = (600, 300)
         Plotter.activate!(; type = "png", visible = false)
 
         p = builderplot(triangulation_of_domain(); Plotter, size)
-        Plotter.save(joinpath(picdir, "triangulation_of_domain.png"),p)
-        
+        Plotter.save(joinpath(picdir, "triangulation_of_domain.png"), p)
+
         p = builderplot(nicer_triangulation_of_domain(); Plotter, size)
-        Plotter.save(joinpath(picdir, "nicer_triangulation_of_domain.png"),p)
-        
+        Plotter.save(joinpath(picdir, "nicer_triangulation_of_domain.png"), p)
+
         p = builderplot(triangulation_of_domain_with_subregions(); Plotter, size)
-        Plotter.save(joinpath(picdir, "triangulation_of_domain_with_subregions.png"),p)
+        Plotter.save(joinpath(picdir, "triangulation_of_domain_with_subregions.png"), p)
 
         p = builderplot(square_localref(); Plotter, size)
-        Plotter.save(joinpath(picdir, "square_localref.png"),p)
-        
+        Plotter.save(joinpath(picdir, "square_localref.png"), p)
+
         p = gridplot(direct_square(); Plotter, size)
-        Plotter.save(joinpath(picdir, "direct_square.png"),p)
-        
+        Plotter.save(joinpath(picdir, "direct_square.png"), p)
+
         p = builderplot(swiss_cheese_2d(); Plotter, size)
-        Plotter.save(joinpath(picdir, "swiss_cheese_2d.png"),p)
-        
+        Plotter.save(joinpath(picdir, "swiss_cheese_2d.png"), p)
+
         p = gridplot(remesh_2d(); Plotter, size)
-        Plotter.save(joinpath(picdir, "remesh_2d.png"),p)
+        Plotter.save(joinpath(picdir, "remesh_2d.png"), p)
 
         p = gridplot(glue_2d(); Plotter, size)
-        Plotter.save(joinpath(picdir, "glue_2d.png"),p)
+        Plotter.save(joinpath(picdir, "glue_2d.png"), p)
     end
 end

@@ -6,8 +6,12 @@ using InteractiveUtils
 
 # This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
 macro bind(def, element)
-    quote
-        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
+    return quote
+        local iv = try
+            Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value
+        catch
+            b -> missing
+        end
         local el = $(esc(element))
         global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
         el
@@ -19,11 +23,11 @@ begin
     import Pkg as _Pkg
     haskey(ENV, "PLUTO_PROJECT") && _Pkg.activate(ENV["PLUTO_PROJECT"])
     using SimplexGridFactory, GridVisualize, ExtendableGrids
-	import Triangulate, TetGen
-	using PlutoUI
-	using PlutoVista
-	import CairoMakie
-	default_plotter!(CairoMakie)
+    import Triangulate, TetGen
+    using PlutoUI
+    using PlutoVista
+    import CairoMakie
+    default_plotter!(CairoMakie)
 end;
 
 # ╔═╡ 940b1996-fe9d-11ea-2fa4-8b72bee62b76
@@ -112,8 +116,8 @@ Two support methods are provided for this purpose.
 
 # ╔═╡ 2d5cb9e1-2d14-415e-b792-c3124901011d
 begin
-	hmin = 0.01;
-	hmax = 0.1;
+    hmin = 0.01
+    hmax = 0.1
 end
 
 # ╔═╡ b1f903b3-29d7-4909-b7e2-8ef3528c9965
@@ -169,8 +173,10 @@ let
 
     scalarplot!(vis, g1d2, fsinh; label = "sinh", markershape = :dtriangle, color = :red, markevery = 5, clear = false)
 
-    scalarplot!(vis, g1d2, fcos; label = "cos", markershape = :xcross, color = :green, linestyle = :dash, clear = false,
-                markevery = 20)
+    scalarplot!(
+        vis, g1d2, fcos; label = "cos", markershape = :xcross, color = :green, linestyle = :dash, clear = false,
+        markevery = 20
+    )
 
     scalarplot!(vis, g1d2, fsin; label = "sin", markershape = :none, color = :blue, linestyle = :dot, clear = false, markevery = 20)
 
@@ -288,7 +294,7 @@ function unsuitable(x1, y1, x2, y2, x3, y3, area)
     dx = bary_x - refinement_center[1]
     dy = bary_y - refinement_center[2]
     qdist = dx^2 + dy^2
-    area > 0.1 * max(1.0e-2, qdist)
+    return area > 0.1 * max(1.0e-2, qdist)
 end;
 
 # ╔═╡ 1ae86964-fe9e-11ea-303b-65bb128384a5
@@ -369,7 +375,7 @@ __Testplot with input and output__
 """
 
 # ╔═╡ 8f0bd5c0-f920-11ea-3b1c-db90fc95f990
-builderplot(builder3; size = (750, 700), Plotter=CairoMakie)
+builderplot(builder3; size = (750, 700), Plotter = CairoMakie)
 
 # ╔═╡ d2129483-285b-49a2-a11d-886956146b85
 md"""
@@ -442,10 +448,10 @@ z=$(@bind zplane Slider(X3[1]:0.1:X3[end],default=X3[end],show_value=true))
 
 # ╔═╡ 3b14e5ba-353d-45de-9851-8ddbf2c410a5
 let
-	vis3 = GridVisualizer(; dim=3,layout = (1, 2), resolution = (600, 300),Plotter=PlutoVista)
+    vis3 = GridVisualizer(; dim = 3, layout = (1, 2), resolution = (600, 300), Plotter = PlutoVista)
     gridplot!(vis3[1, 1], grid3d1; zplane = zplane, yplane = yplane, xplane = xplane)
-    scalarplot!(vis3[1, 2], grid3d1, func3; zplane = zplane, yplane = yplane, xplane = xplane, flevel = flevel)	
-	reveal(vis3)
+    scalarplot!(vis3[1, 2], grid3d1, func3; zplane = zplane, yplane = yplane, xplane = xplane, flevel = flevel)
+    reveal(vis3)
 end
 
 # ╔═╡ 6cad87eb-1c59-4000-b688-a6f6d41f9413
@@ -509,7 +515,7 @@ end;
 grid3d2 = simplexgrid(builder3d; maxvolume = 0.001)
 
 # ╔═╡ 329992a0-e352-468b-af8b-0b190315fc61
-gridplot(grid3d2; zplane = 0.5, azim = 20, elev = 60, linewidth = 0.5,Plotter=PlutoVista)
+gridplot(grid3d2; zplane = 0.5, azim = 20, elev = 60, linewidth = 0.5, Plotter = PlutoVista)
 
 # ╔═╡ a7965a6e-2e83-47eb-aee2-d366246a8637
 html"""<hr>"""

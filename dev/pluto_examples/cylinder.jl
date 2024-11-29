@@ -8,15 +8,15 @@ using InteractiveUtils
 begin
     import Pkg as _Pkg
     haskey(ENV, "PLUTO_PROJECT") && _Pkg.activate(ENV["PLUTO_PROJECT"])
-	#using Revise
-	using ExtendableGrids
-	using SimplexGridFactory
-	using GridVisualize
-	using Triangulate
-	using PlutoVista
-	using VoronoiFVM
-	default_plotter!(PlutoVista)
-	_Pkg.status()	
+    #using Revise
+    using ExtendableGrids
+    using SimplexGridFactory
+    using GridVisualize
+    using Triangulate
+    using PlutoVista
+    using VoronoiFVM
+    default_plotter!(PlutoVista)
+    _Pkg.status()
 end
 
 # ╔═╡ 732e7d64-0b14-409b-9776-c222951bd79f
@@ -28,14 +28,14 @@ We want to have grid refinement towards the vall in order to be eventually able 
 
 # ╔═╡ 84d3f058-3838-4c38-afc5-f2ea30fb9bb6
 begin
-	nref=2 # refinement level
-	rad=1 # outer radius
-	rad_inner=0.5*rad  # inner radius - transition between ring and inner part
-	hmin=rad*0.025*2.0^(-nref) # smallest radial grid size (close to wall)
-	hmax=rad*0.25*2.0^(-nref) # largest radial grid size
-	nang=15*2^(nref)|>ceil|>Int # resolution in angular direction
-	len=10 # length of cylinder
-	nz=len*2^nref+1 |>ceil |>Int # resolution in length direction
+    nref = 2 # refinement level
+    rad = 1 # outer radius
+    rad_inner = 0.5 * rad  # inner radius - transition between ring and inner part
+    hmin = rad * 0.025 * 2.0^(-nref) # smallest radial grid size (close to wall)
+    hmax = rad * 0.25 * 2.0^(-nref) # largest radial grid size
+    nang = 15 * 2^(nref) |> ceil |> Int # resolution in angular direction
+    len = 10 # length of cylinder
+    nz = len * 2^nref + 1 |> ceil |> Int # resolution in length direction
 end
 
 # ╔═╡ 08c71069-4ecb-450c-a905-ca6e7a62ac88
@@ -44,13 +44,13 @@ md"""
 """
 
 # ╔═╡ ea4d6975-bbf9-4b72-b3df-aa4d1faea6c7
-R=geomspace(rad_inner,rad,hmax,hmin)
+R = geomspace(rad_inner, rad, hmax, hmin)
 
 # ╔═╡ a5120dd7-4442-4f87-90c0-bdbce949cd31
-Φ=range(0,2π,length=nang)
+Φ = range(0, 2π, length = nang)
 
 # ╔═╡ 364db500-712e-4b02-b124-1fa005e53e8e
-g_ring=ringsector(R,Φ)
+g_ring = ringsector(R, Φ)
 
 # ╔═╡ f4c5efff-d36a-445c-b59d-abfdc5690212
 gridplot(g_ring)
@@ -82,21 +82,22 @@ point list.
 
 # ╔═╡ 2638116e-d895-4099-a6e4-2a996512cb4a
 begin
-	b1=SimplexGridBuilder(Generator=Triangulate)
-	coord=g_ring[Coordinates]
-	for i=1:size(coord,2)
-		p=point!(b1,coord[:,i])
-	end
-	bregions!(b1,g_ring)
-	cellregion!(b1,1)
-	regionpoint!(b1,0,-0.75)
-	holepoint!(b1,0,0)
-	g_ring2=simplexgrid(b1, 
-		confdelaunay=true, # Ensure Delaunay property
-		minangle=1, # Minimum angle (degrees)
-		nosteiner=true, # Disallow new points at the boundary
-		quality=false, # Don't care about grid quality, focus on Delaunay
-	)
+    b1 = SimplexGridBuilder(Generator = Triangulate)
+    coord = g_ring[Coordinates]
+    for i in 1:size(coord, 2)
+        p = point!(b1, coord[:, i])
+    end
+    bregions!(b1, g_ring)
+    cellregion!(b1, 1)
+    regionpoint!(b1, 0, -0.75)
+    holepoint!(b1, 0, 0)
+    g_ring2 = simplexgrid(
+        b1,
+        confdelaunay = true, # Ensure Delaunay property
+        minangle = 1, # Minimum angle (degrees)
+        nosteiner = true, # Disallow new points at the boundary
+        quality = false, # Don't care about grid quality, focus on Delaunay
+    )
 end
 
 # ╔═╡ 38db1757-2caa-4339-9aeb-177acb9d49a5
@@ -115,11 +116,11 @@ We insert the inner boundary of the ring as part of the geometry description.
 
 # ╔═╡ a4dba614-5955-4a02-afcd-c41160c352ea
 begin
-	b=SimplexGridBuilder(; Generator = Triangulate)
-	bregions!(b,g_ring2,[1])
-	cellregion!(b,1)
-	regionpoint!(b,0,0)
-	g_disk=simplexgrid(b,maxvolume=hmax^2/2,nosteiner=true, confdelunay=true)
+    b = SimplexGridBuilder(; Generator = Triangulate)
+    bregions!(b, g_ring2, [1])
+    cellregion!(b, 1)
+    regionpoint!(b, 0, 0)
+    g_disk = simplexgrid(b, maxvolume = hmax^2 / 2, nosteiner = true, confdelunay = true)
 end
 
 # ╔═╡ f91c6948-9228-4a8c-8aff-0c62bd5007b5
@@ -134,13 +135,13 @@ md"""
 """
 
 # ╔═╡ 3ef68de0-1f52-46a7-8e20-a6f001060d9e
-g_base=glue(g_ring2,g_disk,g1regions=[1],naive=false,strict=true)
+g_base = glue(g_ring2, g_disk, g1regions = [1], naive = false, strict = true)
 
 # ╔═╡ 8922be39-5e1b-4cbe-82c9-cccd5fc34160
 gridplot(g_base)
 
 # ╔═╡ ac343bed-c301-4aa7-9a5e-331f6f01b119
-nondelaunay(g_base, tol=-1.0e-17)
+nondelaunay(g_base, tol = -1.0e-17)
 
 # ╔═╡ 436a74ae-148b-4c8f-b789-04fee27605f3
 md"""
@@ -148,16 +149,16 @@ md"""
 """
 
 # ╔═╡ 088314ef-3896-4826-b1d2-53cdd9c1f4ea
-Z=range(0,len,length=nz)
+Z = range(0, len, length = nz)
 
 # ╔═╡ f13783f1-73db-474d-82d4-da57ca91220c
-g_cyl=simplexgrid(g_base,Z,top_offset=2)
+g_cyl = simplexgrid(g_base, Z, top_offset = 2)
 
 # ╔═╡ 8027688a-600f-477c-a581-6bd785a517d6
-gridplot(g_cyl, Plotter=PlutoVista, zplanes=[5])
+gridplot(g_cyl, Plotter = PlutoVista, zplanes = [5])
 
 # ╔═╡ 56502247-0d07-4cba-8a77-d1e02b8195fb
-nondelaunay(g_cyl,tol=1.0e-14)
+nondelaunay(g_cyl, tol = 1.0e-14)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
