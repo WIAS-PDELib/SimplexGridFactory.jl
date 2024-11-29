@@ -327,21 +327,25 @@ function ExtendableGrids.simplexgrid(builder::SimplexGridBuilder; kwargs...)
             facets[1, i] = builder.facets[i][1]
             facets[2, i] = builder.facets[i][2]
         end
+        make_tio=triangulateio
+        generator_type=TriangulateType
     else
         facets = builder.facets
+        make_tio= tetgenio
+        generator_type=TetGenType
     end
 
     options = blendoptions!(copy(builder.options); kwargs...)
-
-    ExtendableGrids.simplexgrid(builder.Generator;
-                                points = builder.pointlist.points,
-                                bfaces = facets,
-                                bfaceregions = builder.facetregions,
-                                regionpoints = builder.regionpoints,
-                                regionnumbers = builder.regionnumbers,
-                                regionvolumes = builder.regionvolumes,
-                                Generator = builder.Generator,
-                                options...)
+    
+    tio =  make_tio(builder.Generator;
+                    points = builder.pointlist.points,
+                    bfaces = facets,
+                    bfaceregions = builder.facetregions,
+                    regionpoints = builder.regionpoints,
+                    regionnumbers = builder.regionnumbers,
+                    regionvolumes = builder.regionvolumes)
+    
+    ExtendableGrids.simplexgrid(generator_type, builder.Generator, tio; options...)
 end
 
 """

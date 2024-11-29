@@ -1,4 +1,8 @@
 # Changes
+## v2.3.0 Nov 28, 2024
+- Allow for TetGen v1, v2
+- Deprecate simplexgrid(Module...)
+
 ## v2.2.1 Nov 2, 2024
 - Move repo to WIAS-PDELib org
 

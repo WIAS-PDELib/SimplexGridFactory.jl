@@ -124,7 +124,7 @@ end
 #
 
 # ## Direct specification of input arrays
-# Of course we can specify the input for Triangle
+# We can specify the input for Triangle
 # directly. The aim of SimplexBuilder is to avoid
 # the tedious and error prone counting connected
 # with this approach.

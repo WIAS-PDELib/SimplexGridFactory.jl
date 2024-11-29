@@ -29,6 +29,7 @@ function ExtendableGrids.simplexgrid(Generator::Module;
                                      regionnumbers = Array{Cint, 1}(undef, 0),
                                      regionvolumes = Array{Cdouble, 1}(undef, 0),
                                      kwargs...)
+    @warn "ExtendableGrids.simplexgrid(::Module; kwargs...) is deprecated"
     if size(points, 1) == 2
         tio = triangulateio(Generator; points = points,
                             bfaces = bfaces,

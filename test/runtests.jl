@@ -105,13 +105,14 @@ end
 
 @testset "Simplexgrid (arrays 2d)" begin
     function test_simplesquare(; kwargs...)
-        grid = simplexgrid(Triangulate;
-                           points = [0 0; 0 1; 1 1; 1 0]',
-                           bfaces = [1 2; 2 3; 3 4; 4 1]',
-                           bfaceregions = [1, 2, 3, 4],
-                           regionpoints = [0.5 0.5;]',
-                           regionnumbers = [1],
-                           regionvolumes = [0.01], kwargs...)
+        tio= SimplexGridFactory.triangulateio(Triangulate,
+                                              points = [0 0; 0 1; 1 1; 1 0]',
+                                              bfaces = [1 2; 2 3; 3 4; 4 1]',
+                                              bfaceregions = [1, 2, 3, 4],
+                                              regionpoints = [0.5 0.5;]',
+                                              regionnumbers = [1],
+                                              regionvolumes = [0.01])
+        grid = simplexgrid(SimplexGridFactory.TriangulateType,Triangulate, tio; kwargs...)
     end
 
     @test testgrid(test_simplesquare(), (89, 144, 32))
@@ -183,27 +184,27 @@ end
 
 @testset "Simplexgrid (arrays 3d)" begin
     function test_simplecube(; kwargs...)
-        grid = simplexgrid(TetGen;
-                           points = [0 0 0;
-                                     1 0 0;
-                                     1 1 0;
-                                     0 1 0;
-                                     0 0 1;
-                                     1 0 1;
-                                     1 1 1;
-                                     0 1 1]', bfaces = [1 2 3 4;
-                                                        5 6 7 8;
-                                                        1 2 6 5;
-                                                        2 3 7 6;
-                                                        3 4 8 7;
-                                                        4 1 5 8]',
-                           bfaceregions = [i for i = 1:6],
-                           regionpoints = [0.5 0.5 0.5]',
-                           regionnumbers = [1],
-                           regionvolumes = [0.01],
-                           kwargs...)
+        tio= SimplexGridFactory.tetgenio(TetGen,
+                                         points = [0 0 0;
+                                                   1 0 0;
+                                                   1 1 0;
+                                                   0 1 0;
+                                                   0 0 1;
+                                                   1 0 1;
+                                                   1 1 1;
+                                                   0 1 1]', bfaces = [1 2 3 4;
+                                                                      5 6 7 8;
+                                                                      1 2 6 5;
+                                                                      2 3 7 6;
+                                                                      3 4 8 7;
+                                                                      4 1 5 8]',
+                                         bfaceregions = [i for i = 1:6],
+                                         regionpoints = [0.5 0.5 0.5]',
+                                         regionnumbers = [1],
+                                         regionvolumes = [0.01])
+        grid = simplexgrid(SimplexGridFactory.TetGenType,TetGen, tio; kwargs...)
     end
-
+    
     @test testgrid(test_simplecube(), (109, 286, 198))
     @test testgrid(test_simplecube(; flags = "pAaqQD"), (109, 286, 198))
     @test testgrid(test_simplecube(; maxvolume = 0.05), (50, 68, 96))
