@@ -21,7 +21,7 @@ Two panel visualization of gridfactory with input and resulting grid
 -  `layout`: layout of grid visualizer
 -  `vis`: grid visualizer
 -  `circumcircles`: plot circumcicles in output
--  `reveal`: reveal plot upon return
+-  `reveal`: reveal plot upon return. If `revel==true`, `reveal(vis)` is returned, and the plot is shown automatically. If `revel==false`, the visualizer `vis` is returned, giving the user the possibility to add plots in other visualizer slots.
 -  `kwargs...`: passed to output constructor; see [`default_options`](@ref) for available `kwargs`.
 """
 builderplot(gb::SimplexGridBuilder; Plotter = nothing, kwargs...) = builderplot(gb, Plotter; kwargs...)
