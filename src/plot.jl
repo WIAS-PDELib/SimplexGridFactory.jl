@@ -20,7 +20,7 @@ Two panel visualization of gridfactory with input and resulting grid
 -  `output_slot`: slot in visualizer for output plot
 -  `layout`: layout of grid visualizer
 -  `vis`: grid visualizer
--  `circumcircles`: plot circumcicles in output
+-  `circumcircles`: plot circumcircles in output
 -  `reveal`: reveal plot upon return. If `revel==true`, `reveal(vis)` is returned, and the plot is shown automatically. If `revel==false`, the visualizer `vis` is returned, giving the user the possibility to add plots in other visualizer slots.
 -  `kwargs...`: passed to output constructor; see [`default_options`](@ref) for available `kwargs`.
 """
