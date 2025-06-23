@@ -395,5 +395,5 @@ end
         builder
     end
     @info builderplot(t2d(); Plotter = CairoMakie) |> typeof
-    @test isa(builderplot(t2d(); Plotter = CairoMakie), CairoMakie.Figure)
+    @test isa(builderplot(t2d(); Plotter = CairoMakie), CairoMakie.Scene)
 end

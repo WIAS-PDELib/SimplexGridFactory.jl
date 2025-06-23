@@ -1,14 +1,44 @@
 """
-$(TYPEDSIGNATURES)
+    builderplot(
+        builder::SimplexGridBuilder;
+        Plotter::Module = nothing,
+        size = (650, 300),
+        input_slot = (1, 1),
+        output_slot = (1, 2),
+        layout = (1, 2),
+        vis = GridVisualizer(; Plotter, layout, size),
+        circumcircles = false,
+        reveal = true,
+        kwargs...
+    )
 
 Two panel visualization of gridfactory with input and resulting grid
-See [`default_options`](@ref) for available `kwargs`.
+-  `builder` : Simplex grid builder
+-  `Plotter`  : Plotter
+-  `size`: size of plot
+-  `input_slot`: slot in visualizer for input plot
+-  `output_slot`: slot in visualizer for output plot
+-  `layout`: layout of grid visualizer
+-  `vis`: grid visualizer
+-  `circumcircles`: plot circumcicles in output
+-  `reveal`: reveal plot upon return
+-  `kwargs...`: passed to output constructor; see [`default_options`](@ref) for available `kwargs`.
 """
 builderplot(gb::SimplexGridBuilder; Plotter = nothing, kwargs...) = builderplot(gb, Plotter; kwargs...)
 
 builderplot(builder::SimplexGridBuilder, ::Nothing; kwargs...) = nothing
 
-function builderplot(builder::SimplexGridBuilder, Plotter::Module; size = (650, 300), kwargs...)
+function builderplot(
+        builder::SimplexGridBuilder, Plotter::Module;
+        size = (650, 300),
+        input_slot = (1, 1),
+        output_slot = (1, 2),
+        layout = (1, 2),
+        vis = GridVisualizer(; Plotter, layout, size),
+        circumcircles = false,
+        reveal = true,
+        kwargs...
+    )
     opts = blendoptions!(copy(builder.options); kwargs...)
 
     Triangulate = builder.Generator
@@ -34,15 +64,23 @@ function builderplot(builder::SimplexGridBuilder, Plotter::Module; size = (650, 
 
     triout, vorout = Triangulate.triangulate(flags, triin)
 
-    figure = nothing
-    if Triangulate.ispyplot(Plotter)
-        Plotter.close()
-        Plotter.clf()
-        fig = Plotter.figure(1; dpi = 100)
-        fig.set_size_inches(size[1] / 100, size[2] / 100; forward = true)
+    plot_triangulateio!(
+        vis[input_slot...],
+        triin;
+        title = "Input"
+    )
+
+    plot_triangulateio!(
+        vis[output_slot...],
+        triout;
+        voronoi = length(vorout.pointlist) > 0 ? vorout : nothing,
+        circumcircles,
+        title = "Output"
+    )
+
+    if reveal
+        return GridVisualize.reveal(vis)
+    else
+        return vis
     end
-    if Triangulate.ismakie(Plotter)
-        figure = Plotter.Figure(; size)
-    end
-    return Triangulate.plot_in_out(Plotter, triin, triout; figure)
 end
