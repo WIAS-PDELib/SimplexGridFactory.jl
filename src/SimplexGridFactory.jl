@@ -12,6 +12,7 @@ using ElasticArrays: ElasticArray
 import ExtendableGrids
 using ExtendableGrids: dim_space, Coordinates, BFaceNodes, BFaceRegions, simplexgrid, BinnedPointList
 using DocStringExtensions: SIGNATURES, TYPEDEF, TYPEDSIGNATURES
+using GridVisualize: GridVisualize, GridVisualizer, plot_triangulateio!
 using FileIO: load
 import MeshIO
 
