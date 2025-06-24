@@ -3,7 +3,8 @@
 ## v2.6.0 June 24, 2025
 
 - Fixed `minangle` parameter forwarding to TetGen
-- New default value `minangle = 10` for `TetGen`, leave default value `20` for `Triangle`
+- New default value `minangle = 0` for `TetGen`, leave default value `20` for `Triangle`
+- New flag `radius_edge_ratio` for `TetGen`
 
 ## v2.5.0 June 24, 2025
 - Allow for Triangulate v3
