@@ -1,4 +1,9 @@
 # Changes
+
+## v2.5.0 June 24, 2025
+- Allow for Triangulate v3
+- Re-implemented builderplot based on GridVisualize.plot_triangulateio
+
 ## v2.4.0 Jan 20, 2024
 - Bump MeshIO compat to v0.5 (and thus allow for GeometryBasics v0.5)
 
