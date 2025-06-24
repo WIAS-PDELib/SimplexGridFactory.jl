@@ -49,8 +49,10 @@ function SimplexGridBuilder(; Generator = nothing, tol = 1.0e-12, checkexisting 
 
     if istetgen(Generator)
         dim = 3
+        mesher = :tetgen
     elseif istriangulate(Generator)
         dim = 2
+        mesher = :triangle
     else
         throw(ArgumentError("Wrong Generator: SimplexGridBuilder needs Generator=TetGen or Generator=Triangulate as argument"))
     end
@@ -66,7 +68,7 @@ function SimplexGridBuilder(; Generator = nothing, tol = 1.0e-12, checkexisting 
     builder.regionpoints = ElasticArray{Cdouble}(undef, dim, 0)
     builder.regionvolumes = []
     builder.regionnumbers = []
-    builder.options = default_options()
+    builder.options = default_options(mesher)
     builder.checkexisting = checkexisting
     builder._savedpoint = 0
     return builder

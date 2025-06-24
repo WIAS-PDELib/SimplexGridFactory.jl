@@ -224,7 +224,7 @@ end
     @test testgrid(test_simplecube(; flags = "pAaqQD"), (109, 286, 198))
     @test testgrid(test_simplecube(; maxvolume = 0.05), (50, 68, 96))
 
-    @test testgrid(test_simplecube(; unsuitable = test_tetunsuitable), (223, 971, 198))
+    @test testgrid(test_simplecube(; unsuitable = test_tetunsuitable), (242, 1095, 198))
 end
 
 @testset "SimplexGridBuilder 3d" begin
@@ -264,7 +264,7 @@ end
     end
 
     @test SimplexGridFactory.tetgenio(test_buildercube0()) isa RawTetGenIO
-    @test testgrid(test_buildercube(; unsuitable = test_tetunsuitable), (223, 971, 198))
+    @test testgrid(test_buildercube(; unsuitable = test_tetunsuitable), (242, 1095, 198))
 end
 
 @testset "examples2d.jl" begin
@@ -284,7 +284,7 @@ end;
     @test testgrid(tetrahedralization_of_cube(), (718, 2456, 1094))
     @test testgrid(tet_cube_with_primitives(), (5658, 27324, 6888))
     @test testgrid(glue_3d(), (29832, 173202, 13200))
-    @test testgrid(stl_3d(), (4740, 13605, 9464))
+    @test testgrid(stl_3d(), (5979, 20640, 9818))
 end;
 
 # @testset "    PlutoGridFactory.jl" begin
@@ -382,7 +382,7 @@ end;
     end
     @test testgrid(prim2d(), (106, 179, 50))
     @test testgrid(prim2d_lineto(), (24, 30, 16))
-    @test testgrid(prim3d(), (423, 1787, 822))
+    @test testgrid(prim3d(), (591, 2872, 822))
     @test testgrid(prim3d_moveto(), (207, 564, 368))
 end
 
