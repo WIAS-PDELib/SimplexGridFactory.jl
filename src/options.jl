@@ -9,7 +9,8 @@ keyword arguments available to the methods of the package and are listed in the 
 | PLC            | true    | -p  | -p  | Triangulate/tetraheralize PLSG/PLC                         |
 | refine         | false   | -r  | -r  | Refines a previously generated mesh.                       |
 | quality        | true    | -q  | -q  | Quality mesh generation                                    |
-| minangle       | 20      |     |     | Minimum angle for quality                                  |
+| minangle       | 2D: 20  |     |     | Minimum angle for quality                                  |
+|                | 3D: 10  |     |     |                                                            |
 | volumecontrol  | true    | -a  | -a  | Maximum area constraint                                    |
 | maxvolume      | Inf     |     |     | Value of area/volume constraint if less than Inf           |
 | attributes     | true    | -A  | -A  | Regional attribute to each simplex.                        |
@@ -39,11 +40,11 @@ The `unsuitable` parameter should be a function, see
 [`triunsuitable!`](https://juliageometry.github.io/TetGen.jl/stable/#TetGen.triunsuitable!-Tuple{Function}) .
 
 """
-default_options() = Dict{Symbol, Any}(
+default_options(mesher) = Dict{Symbol, Any}(
     :PLC => true,
     :refine => false,
     :quality => true,
-    :minangle => 20,
+    :minangle => mesher == :triangle ? 20 : 10,
     :volumecontrol => true,
     :maxvolume => Inf,
     :attributes => true,
@@ -83,7 +84,11 @@ function makeflags(options, mesher)
         options[:refine] ? flags *= "r" : nothing
         if options[:quality]
             minangle = Float64(options[:minangle])
-            flags *= @sprintf("q%.2f", minangle)
+            if mesher == :tetgen
+                flags *= @sprintf("q/%.2f", minangle)
+            else
+                flags *= @sprintf("q%.2f", minangle)
+            end
         end
         if options[:volumecontrol]
             flags *= "a"

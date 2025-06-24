@@ -7,7 +7,7 @@ See [`default_options`](@ref) for available `kwargs`.
 
 """
 function ExtendableGrids.simplexgrid(::Type{TetGenType}, TetGen, input; kwargs...)
-    opts = blendoptions!(default_options(); kwargs...)
+    opts = blendoptions!(default_options(:tetgen); kwargs...)
 
     flags = makeflags(opts, :tetgen)
 

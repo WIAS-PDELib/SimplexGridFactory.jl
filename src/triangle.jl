@@ -6,7 +6,7 @@ Create Grid from Triangle input data.
 See [`default_options`](@ref) for available `kwargs`.
 """
 function ExtendableGrids.simplexgrid(::Type{TriangulateType}, Triangulate, input; kwargs...)
-    opts = blendoptions!(default_options(); kwargs...)
+    opts = blendoptions!(default_options(:triangle); kwargs...)
 
     flags = makeflags(opts, :triangle)
 
