@@ -152,6 +152,10 @@ function tetgenio(this::SimplexGridBuilder)
     )
 end
 
+function writesmesh(file::String, b::SimplexGridBuilder)
+    return writesmesh(file, tetgenio(b))
+end
+
 function writesmesh(io::IO, tio)
     shift = 1
     npoints = size(tio.pointlist, 2)
