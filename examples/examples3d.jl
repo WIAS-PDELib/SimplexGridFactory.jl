@@ -153,28 +153,24 @@ end
 # Plot generation
 using GridVisualize
 function generateplots(picdir; Plotter = nothing)
-    return if isdefined(Plotter, :gcf)
+    return if isdefined(Plotter, :Makie)
         size = (300, 300)
+        Plotter.activate!(; type = "png", visible = false)
 
-        Plotter.clf()
-        gridplot(tetrahedralization_of_cube(); Plotter, size, zplane = 0.5)
-        Plotter.savefig(joinpath(picdir, "tetrahedralization_of_cube.png"))
+        p = gridplot(tetrahedralization_of_cube(); Plotter, size, zplane = 0.5)
+        Plotter.save(joinpath(picdir, "tetrahedralization_of_cube.png"), p)
 
-        Plotter.clf()
-        gridplot(tet_cube_with_primitives(); Plotter, size, zplane = 5, azim = 47, elev = 80, interior = false)
-        Plotter.savefig(joinpath(picdir, "tet_cube_with_primitives.png"))
+        p = gridplot(tet_cube_with_primitives(); Plotter, size, zplane = 5, azim = 47, elev = 80, interior = false)
+        Plotter.save(joinpath(picdir, "tet_cube_with_primitives.png"), p)
 
-        Plotter.clf()
-        gridplot(glue_3d(); Plotter, size, azim = 0, elev = 15, xplanes = [5])
-        Plotter.savefig(joinpath(picdir, "glue_3d.png"))
+        p = gridplot(glue_3d(); Plotter, size, azim = 0, elev = 15, xplanes = [5])
+        Plotter.save(joinpath(picdir, "glue_3d.png"), p)
 
-        Plotter.clf()
-        gridplot(remesh_3d(); Plotter, size, zplanes = [0.5])
-        Plotter.savefig(joinpath(picdir, "remesh_3d.png"))
+        p = gridplot(remesh_3d(); Plotter, size, zplanes = [0.5])
+        Plotter.save(joinpath(picdir, "remesh_3d.png"), p)
 
-        Plotter.clf()
-        gridplot(stl_3d(); Plotter, size, xplanes = [5])
-        Plotter.savefig(joinpath(picdir, "stl_3d.png"))
+        p = gridplot(stl_3d(); Plotter, size, xplanes = [5])
+        Plotter.save(joinpath(picdir, "stl_3d.png"), p)
 
     end
 end
