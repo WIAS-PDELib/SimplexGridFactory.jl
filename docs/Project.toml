@@ -14,8 +14,6 @@ Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 SimplexGridFactory = "57bfcd06-606e-45d6-baf4-4ba06da0efd5"
 TetGen = "c5d3f3f7-f850-59f6-8a2e-ffc6dc1317ea"
 Triangulate = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
-VoronoiFVM = "82b139dc-5afc-11e9-35da-9b9bdfd336f3"
 
 [compat]
 ExampleJuggler = "2"
-VoronoiFVM = "1.21"
