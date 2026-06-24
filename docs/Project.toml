@@ -22,4 +22,4 @@ SimplexGridFactory = {path = ".."}
 
 [compat]
 ExampleJuggler = "2"
-VoronoiFVM = "1.21"
+VoronoiFVM = "3"
