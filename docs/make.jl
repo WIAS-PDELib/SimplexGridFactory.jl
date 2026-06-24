@@ -1,6 +1,8 @@
 using Documenter, SimplexGridFactory, ExtendableGrids
 import PlutoSliderServer
 using GridVisualize, ExampleJuggler
+using Conda
+Conda.add("matplotlib")
 ENV["MPLBACKEND"] = "agg"
 import CairoMakie, PyPlot
 ExampleJuggler.verbose!(true)

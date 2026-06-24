@@ -1,5 +1,6 @@
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+Conda = "8f4d0f93-b110-5947-807f-2305c1781a2d"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 ExampleJuggler = "3bbe58f8-ed81-4c4e-a134-03e85fcf4a1a"
 ExtendableGrids = "cfc395e8-590f-11e8-1f13-43a2532b2fa8"
@@ -15,6 +16,9 @@ SimplexGridFactory = "57bfcd06-606e-45d6-baf4-4ba06da0efd5"
 TetGen = "c5d3f3f7-f850-59f6-8a2e-ffc6dc1317ea"
 Triangulate = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
 VoronoiFVM = "82b139dc-5afc-11e9-35da-9b9bdfd336f3"
+
+[sources]
+SimplexGridFactory = {path = ".."}
 
 [compat]
 ExampleJuggler = "2"
