@@ -71,6 +71,7 @@ jobs:
             Pkg.instantiate()'
         env:
           PYTHON: ""
+      - run: julia -e 'using Conda; Conda.add("matplotlib")'
       # - run: |
       #     julia --project=docs -e '
       #       using Documenter: doctest
