@@ -1,8 +1,7 @@
 using Documenter, SimplexGridFactory, ExtendableGrids
 import PlutoSliderServer
 using GridVisualize, ExampleJuggler
-ENV["MPLBACKEND"] = "agg"
-import CairoMakie, PyPlot
+import CairoMakie
 ExampleJuggler.verbose!(true)
 
 
@@ -12,10 +11,7 @@ function mkdocs()
     cleanexamples()
     exampledir = joinpath(@__DIR__, "..", "examples")
     notebookdir = joinpath(@__DIR__, "..", "notebooks")
-    cairo_examples = @docscripts(exampledir, ["examples2d.jl"], Plotter = CairoMakie)
-    pyplot_examples = @docscripts(exampledir, ["examples3d.jl"], Plotter = PyPlot)
-
-    generated_examples = [cairo_examples..., pyplot_examples...]
+    generated_examples = @docscripts(exampledir, ["examples2d.jl", "examples3d.jl"], Plotter = CairoMakie)
     notebook_examples = @docplutonotebooks(notebookdir, ["gridgenvis.jl", "cylinder.jl"], iframe = true, iframe_height = "2000px")
 
 
@@ -25,7 +21,7 @@ function mkdocs()
         doctest = false,
         clean = false,
         authors = "J. Fuhrmann, Ch. Merdon",
-        repo = "https://github.com/WIAS-PDELib/SimplexGridFactory.jl",
+        repo = Documenter.Remotes.GitHub("WIAS-PDELib", "SimplexGridFactory.jl"),
         pages = [
             "Home" => "index.md",
             "Changes" => "changes.md",
