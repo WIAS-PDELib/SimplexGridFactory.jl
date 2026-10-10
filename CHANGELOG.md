@@ -1,5 +1,9 @@
 # Changes
 
+## v2.7.0 October 10, 2026
+- Allow for TetGen.jl version 3. Consult the [TetGen.jl README](https://github.com/JuliaGeometry/TetGen.jl/blob/master/README.md) for
+  information on the different versions the upstream C++ TetGen code and its Julia binary package TetGen_jll.jl.
+
 ## v2.6.0 June 24, 2025
 
 - Fixed `minangle` parameter forwarding to TetGen

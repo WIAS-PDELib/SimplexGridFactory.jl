@@ -8,7 +8,7 @@ using ExtendableGrids
 using CairoMakie
 using GridVisualize
 using Triangulate
-using TetGen
+using TetGen, TetGen_jll
 using LinearAlgebra
 
 
@@ -91,6 +91,7 @@ testgrid(builder::SimplexGridBuilder, testdata) = testgrid(simplexgrid(builder),
 
         grid = simplexgrid(points, cells, cellregions, bfaces, bfaceregions)
     end
+
     @test testgrid(test_ctriangulateio(), (177, 319, 33))
 
     function test_triangulateio()
@@ -225,11 +226,18 @@ end
         grid = simplexgrid(SimplexGridFactory.TetGenType, TetGen, tio; kwargs...)
     end
 
-    @test testgrid(test_simplecube(), (109, 286, 198))
-    @test testgrid(test_simplecube(; flags = "pAaqQD"), (109, 286, 198))
-    @test testgrid(test_simplecube(; maxvolume = 0.05), (50, 68, 96))
+    if pkgversion(TetGen_jll) < v"1.6.0"
+        @test testgrid(test_simplecube(), (109, 286, 198))
+        @test testgrid(test_simplecube(; flags = "pAaqQD"), (109, 286, 198))
+        @test testgrid(test_simplecube(; maxvolume = 0.05), (50, 68, 96))
+        @test testgrid(test_simplecube(; unsuitable = test_tetunsuitable), (242, 1095, 198))
+    else
+        @test testgrid(test_simplecube(), (63, 192, 96))
+        @test testgrid(test_simplecube(; flags = "pAaqQD"), (63, 192, 96))
+        @test testgrid(test_simplecube(; maxvolume = 0.05), (14, 24, 24))
+        @test testgrid(test_simplecube(; unsuitable = test_tetunsuitable), (167, 788, 110))
 
-    @test testgrid(test_simplecube(; unsuitable = test_tetunsuitable), (242, 1095, 198))
+    end
 end
 
 @testset "SimplexGridBuilder 3d" begin
@@ -269,7 +277,11 @@ end
     end
 
     @test SimplexGridFactory.tetgenio(test_buildercube0()) isa RawTetGenIO
-    @test testgrid(test_buildercube(; unsuitable = test_tetunsuitable), (242, 1095, 198))
+    if pkgversion(TetGen_jll) < v"1.6.0"
+        @test testgrid(test_buildercube(; unsuitable = test_tetunsuitable), (242, 1095, 198))
+    else
+        @test testgrid(test_buildercube(; unsuitable = test_tetunsuitable), (167, 788, 110))
+    end
 end
 
 @testset "examples2d.jl" begin
@@ -286,10 +298,17 @@ end;
 
 @testset "examples3d.jl" begin
     include("../examples/examples3d.jl")
-    @test testgrid(tetrahedralization_of_cube(), (718, 2456, 1094))
-    @test testgrid(tet_cube_with_primitives(), (5658, 27324, 6888))
-    @test testgrid(glue_3d(), (29832, 173202, 13200))
-    @test testgrid(stl_3d(), (5979, 20640, 9818))
+    if pkgversion(TetGen_jll) < v"1.6.0"
+        @test testgrid(tetrahedralization_of_cube(), (718, 2456, 1094))
+        @test testgrid(tet_cube_with_primitives(), (5658, 27324, 6888))
+        @test testgrid(glue_3d(), (29832, 173202, 13200))
+        @test testgrid(stl_3d(), (5979, 20640, 9818))
+    else
+        @test testgrid(tetrahedralization_of_cube(), (417, 1755, 484))
+        @test testgrid(tet_cube_with_primitives(), (4186, 21037, 3830))
+        @test testgrid(glue_3d(), (29832, 173202, 13200))
+        @test testgrid(stl_3d(), (2869, 10116, 4584))
+    end
 end;
 
 # @testset "    PlutoGridFactory.jl" begin
@@ -387,8 +406,13 @@ end;
     end
     @test testgrid(prim2d(), (106, 179, 50))
     @test testgrid(prim2d_lineto(), (24, 30, 16))
-    @test testgrid(prim3d(), (591, 2872, 822))
-    @test testgrid(prim3d_moveto(), (207, 564, 368))
+    if pkgversion(TetGen_jll) < v"1.6.0"
+        @test testgrid(prim3d(), (591, 2872, 822))
+        @test testgrid(prim3d_moveto(), (207, 564, 368))
+    else
+        @test testgrid(prim3d(), (509, 2705, 652))
+        @test testgrid(prim3d_moveto(), (137, 446, 214))
+    end
 end
 
 @testset "builderplot" begin
