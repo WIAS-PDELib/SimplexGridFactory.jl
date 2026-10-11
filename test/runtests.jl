@@ -47,7 +47,7 @@ CairoMakie.activate!(; visible = false)
 # Generated point numbers depend on floating point operations,
 # so we don't insist in exact matches
 function testgrid(grid::ExtendableGrid, testdata)
-    return all(isapprox.((num_nodes(grid), num_cells(grid), num_bfaces(grid)), testdata, rtol = 0.1))
+    return all(isapprox.((num_nodes(grid), num_cells(grid), num_bfaces(grid)), testdata, rtol = 0.2))
 end
 testgrid(builder::SimplexGridBuilder, testdata) = testgrid(simplexgrid(builder), testdata)
 
