@@ -1,6 +1,6 @@
 # Changes
 
-## Unreleased
+## v2.7.0 October 12, 2026
 
 ### Added
 - `arc!` primitive to construct circular boundary geometries
@@ -9,7 +9,6 @@
 ### Fixed
 - `circle!` primitive now constructs the circle based on polar coordinates, i.e. starting at `[r,0]`.  
 
-## v2.7.0 October 10, 2026
 - Allow for TetGen.jl version 3. Consult the [TetGen.jl README](https://github.com/JuliaGeometry/TetGen.jl/blob/master/README.md) for
   information on the different versions the upstream C++ TetGen code and its Julia binary package TetGen_jll.jl.
 
