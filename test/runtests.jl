@@ -426,3 +426,41 @@ end
     @info builderplot(t2d(); Plotter = CairoMakie) |> typeof
     @test isa(builderplot(t2d(); Plotter = CairoMakie), CairoMakie.Scene)
 end
+
+@testset "2d arc primitive" begin
+    piquart = sqrt(2.0) / 2.0 #x,y value for π/4
+    function arc_vs_circle2d()
+        circbuilder = SimplexGridBuilder(; Generator = Triangulate)
+        arcbuilder = SimplexGridBuilder(; Generator = Triangulate)
+        center = rand(2)
+        radius = rand()
+        a = [center[1] + radius, center[2]]
+        n = Int64(ceil(rand() * 20.0)) + 3
+        circle!(circbuilder, center, radius; n = n)
+        SimplexGridFactory.arc!(arcbuilder, a, center, a; n = n)
+        for i in 1:(n - 1)
+            @test isapprox(circbuilder.pointlist.points[:, i], arcbuilder.pointlist.points[:, i])
+        end
+    end
+    function arcs_quadrant1_quadrant3()
+        b = SimplexGridBuilder(; Generator = Triangulate)
+        quad1_center = point!(b, piquart, piquart)
+        quad3_center = point!(b, -piquart, -piquart)
+        SimplexGridFactory.arc!(b, quad1_center, [0.0, 0.0], quad3_center; n = 3)
+        SimplexGridFactory.arc!(b, quad3_center, [0.0, 0.0], quad1_center; n = 3)
+        @test isapprox(b.pointlist.points[:, 3][1], -piquart)
+        @test isapprox(b.pointlist.points[:, 3][2], piquart)
+        @test isapprox(b.pointlist.points[:, 4][1], piquart)
+        @test isapprox(b.pointlist.points[:, 4][2], -piquart)
+    end
+    function arc_radius_mismatch()
+        b = SimplexGridBuilder(; Generator = Triangulate)
+        p1 = point!(b, piquart, piquart)
+        p2 = point!(b, -2 * piquart, 2 * piquart)
+        @test_throws "Can't construct arc: start and endpoint are not on the same circle." SimplexGridFactory.arc!(b, p1, [0.0, 0.0], p2)
+    end
+
+    arc_vs_circle2d()
+    arcs_quadrant1_quadrant3()
+    arc_radius_mismatch()
+end

@@ -252,6 +252,34 @@ end
 # ![](swiss_cheese_2d.png)
 #
 
+# ## Domain with an arc boundary
+# We can generate domains where a part of the boundary is described through an arc.
+# This function constructs a quarter the well know "plate with a hole" geometry.
+#
+function holeplate_2d(H = 1.0, r = 0.33)
+    builder = SimplexGridBuilder(; Generator = Triangulate)
+    p1 = point!(builder, 0, r)
+    p2 = point!(builder, 0, H)
+    p3 = point!(builder, H, H)
+    p4 = point!(builder, H, 0)
+    p5 = point!(builder, r, 0)
+
+    facetregion!(builder, 1)
+    facet!(builder, p1, p2)
+    facetregion!(builder, 2)
+    facet!(builder, p2, p3)
+    facetregion!(builder, 3)
+    facet!(builder, p3, p4)
+    facetregion!(builder, 4)
+    facet!(builder, p4, p5)
+    facetregion!(builder, 5)
+    SimplexGridFactory.arc!(builder, p5, [0.0, 0.0], p1; n = 5)
+
+    return simplexgrid(builder, maxvolume = 0.0125)
+end
+#
+# ![](holeplate_2d.png)
+#
 
 # ## Remeshing another grid
 #
@@ -351,5 +379,8 @@ function generateplots(picdir; Plotter = nothing)
 
         p = gridplot(glue_2d(); Plotter, size)
         Plotter.save(joinpath(picdir, "glue_2d.png"), p)
+
+        p = gridplot(holeplate_2d(); Plotter, size)
+        Plotter.save(joinpath(picdir, "holeplate_2d.png"), p)
     end
 end
