@@ -6,7 +6,7 @@ circle!(builder, center, radius; n=20)
 Add points and facets approximating a circle.
 """
 function circle!(builder::SimplexGridBuilder, center, radius; n = 20)
-    points = [point!(builder, center[1] + radius * sin(t), center[2] + radius * cos(t)) for t in range(0, 2π; length = n)]
+    points = [point!(builder, center[1] + radius * cos(t), center[2] + radius * sin(t)) for t in range(0, 2π; length = n)]
     for i in 1:(n - 1)
         facet!(builder, points[i], points[i + 1])
     end
