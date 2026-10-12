@@ -1,4 +1,10 @@
 # Changes
+## v2.8.0 October 13, 2026
+
+### Added
+
+ - Local Grid Refinement: function `unsuitable` now can be used with only 2 arguments (barycentric coordinates, area/volume) in 2D and 3D. This unifies the signature for both 2D and 3D.
+ - New doc page: `"Local Grid Refinement"` and tests.
 
 ## v2.7.0 October 12, 2026
 

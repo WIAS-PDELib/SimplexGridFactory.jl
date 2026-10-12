@@ -168,9 +168,8 @@ function square_localref()
     facet!(builder, p4, p1)
 
     refinement_center = [0.5, 0.5]
-    function unsuitable(x1, y1, x2, y2, x3, y3, area)
-        bary = [(x1 + x2 + x3) / 3, (y2 + y2 + y3) / 3]
-        dist = norm(bary - refinement_center)
+    function unsuitable(center, area)
+        dist = norm(center - refinement_center)
         if area > 0.01 * dist
             return 1
         else

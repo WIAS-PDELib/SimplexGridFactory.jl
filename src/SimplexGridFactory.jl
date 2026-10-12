@@ -6,7 +6,7 @@ $(read(joinpath(@__DIR__, "..", "README.md"), String))
 module SimplexGridFactory
 
 using Printf: @sprintf
-using LinearAlgebra: norm
+using LinearAlgebra: norm, det
 
 using ElasticArrays: ElasticArray
 import ExtendableGrids

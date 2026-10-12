@@ -107,13 +107,19 @@ end
 
 function test_triunsuitable(x1, y1, x2, y2, x3, y3, area)
     refinement_center = [0.5, 0.5]
-    bary = [(x1 + x2 + x3) / 3, (y2 + y2 + y3) / 3]
+    bary = [(x1 + x2 + x3) / 3, (y1 + y2 + y3) / 3]
     dist = norm(bary - refinement_center)
     if area > 0.01 * dist
         return 1
     else
         return 0
     end
+end
+
+refinement_center = [0.5, 0.5]
+function test_triunsuitable_comfi(center, area)
+    dist = norm(center - refinement_center)
+    return area > 0.01 * dist ? 1 : 0
 end
 
 @testset "Simplexgrid (arrays 2d)" begin
@@ -137,6 +143,7 @@ end
     @test testgrid(test_simplesquare(; minangle = 30), (91, 148, 32))
 
     @test testgrid(test_simplesquare(; unsuitable = test_triunsuitable), (299, 550, 46))
+    @test testgrid(test_simplesquare(; unsuitable = test_triunsuitable_comfi), (299, 550, 46))
 end
 
 @testset "SimplexGridBuilder 2d" begin
@@ -191,10 +198,16 @@ end
     @test testgrid(test_buildersquare1(), (299, 550, 46))
 end
 
+
 function test_tetunsuitable(pa, pb, pc, pd)
     vol = det(hcat(pb - pa, pc - pa, pd - pa)) / 6
     center = 0.25 * (pa + pb + pc + pd) - [0.5, 0.5, 0.5]
     return vol > 0.05 * norm(center)^2.5
+end
+
+refinement_center = [0.5, 0.5, 0.5]
+function test_tetunsuitable_comfi(center, vol)
+    return vol > 0.05 * norm(center - refinement_center)^2.5
 end
 
 @testset "Simplexgrid (arrays 3d)" begin
@@ -236,6 +249,7 @@ end
         @test testgrid(test_simplecube(; flags = "pAaqQD"), (63, 192, 96))
         @test testgrid(test_simplecube(; maxvolume = 0.05), (14, 24, 24))
         @test testgrid(test_simplecube(; unsuitable = test_tetunsuitable), (167, 788, 110))
+        @test testgrid(test_simplecube(; unsuitable = test_tetunsuitable_comfi), (167, 788, 110))
 
     end
 end

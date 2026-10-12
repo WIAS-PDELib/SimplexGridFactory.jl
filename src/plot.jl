@@ -59,7 +59,7 @@ function builderplot(
     end
 
     if !isnothing(opts[:unsuitable])
-        Triangulate.triunsuitable!(opts[:unsuitable])
+        set_unsuitable!(TriangulateType, Triangulate, opts[:unsuitable])
     end
 
     triout, vorout = Triangulate.triangulate(flags, triin)
