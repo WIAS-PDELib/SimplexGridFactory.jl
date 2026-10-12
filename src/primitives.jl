@@ -15,6 +15,65 @@ function circle!(builder::SimplexGridBuilder, center, radius; n = 20)
 end
 
 """
+    arc!(builder::SimplexGridBuilder, startpoint, center, endpoint; n = 5)
+
+Add points and facets approximating a counterclockwise arc on a circle.
+
+Note that you probably still need to connect the start- and endpoint to other points with facets. 
+"""
+function arc!(builder, startpoint, center, endpoint; n = 5)
+    radius, θ = _arcdata(startpoint, center, endpoint, n)
+    points = [point!(builder, center[1] + radius * cos(t), center[2] + radius * sin(t)) for t in θ]
+    for i in 1:(length(points) - 1)
+        facet!(builder, points[i], points[i + 1])
+    end
+    return builder
+end
+
+"""
+    arc!(builder, startpoint::Integer, center, endpoint::Integer; n = 5)
+
+Add points and facets approximating a counterclockwise arc on a circle.
+Here, start- and endpoint are specified as point ids of points already known to the `builder`.
+"""
+function arc!(builder, startpoint::Integer, center, endpoint::Integer; n = 5)
+    radius, θ = _arcdata(builder.pointlist.points[:, startpoint], center, builder.pointlist.points[:, endpoint], n)
+    points = [point!(builder, center[1] + radius * cos(t), center[2] + radius * sin(t)) for t in θ[2:end]]
+    facet!(builder, startpoint, points[1])
+    for i in 1:(length(points) - 1)
+        facet!(builder, points[i], points[i + 1])
+    end
+    facet!(builder, points[end], endpoint)
+    return builder
+end
+
+function _arcdata(startpoint, center, endpoint, n)
+    a = startpoint - center
+    b = endpoint - center
+    radius = sqrt(a[1]^2 + a[2]^2)
+    if !isapprox(radius, sqrt(b[1]^2 + b[2]^2))
+        error("Can't construct arc: start and endpoint are not on the same circle.")
+    end
+    a /= radius
+    b /= radius
+    α = atan(a[2], a[1])
+    β = atan(b[2], b[1])
+    # If a point lies in the lower half of the circle, adjust angle
+    if a[2] < 0
+        α += 2π
+    end
+    if b[2] < 0
+        β += 2π
+    end
+    # Ensure the arc is clockwise
+    if α >= β
+        β += 2π
+    end
+    return radius, range(α, β; length = n)
+end
+
+
+"""
 ```
 bregions!(builder::SimplexGridBuilder,grid, pairs...)
 ```
