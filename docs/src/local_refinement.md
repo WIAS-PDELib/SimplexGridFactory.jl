@@ -30,7 +30,6 @@ To hand this function over to the builder:
     options!(builder; unsuitable = unsuitable)
 ```
 
-Full example can be found [here](../script_examples/examples2d/#Local-refinement)
 
 ### 3D - TetGen
 
