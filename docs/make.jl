@@ -26,6 +26,7 @@ function mkdocs()
             "Home" => "index.md",
             "Changes" => "changes.md",
             "API" => "api.md",
+            "Local Grid Refinement" => "local_refinement.md",
             "Examples" => generated_examples,
             "Notebooks" => notebook_examples,
             "Internals" => "internals.md",

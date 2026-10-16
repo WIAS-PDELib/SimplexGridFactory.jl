@@ -14,7 +14,7 @@ function ExtendableGrids.simplexgrid(::Type{TriangulateType}, Triangulate, input
         @show flags
     end
     if !isnothing(opts[:unsuitable])
-        Triangulate.triunsuitable!(opts[:unsuitable])
+        set_unsuitable!(TriangulateType, Triangulate, opts[:unsuitable])
     end
 
     triout, vorout = Triangulate.triangulate(flags, input)

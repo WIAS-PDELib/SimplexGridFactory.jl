@@ -8,7 +8,6 @@ See [`default_options`](@ref) for available `kwargs`.
 """
 function ExtendableGrids.simplexgrid(::Type{TetGenType}, TetGen, input; kwargs...)
     opts = blendoptions!(default_options(:tetgen); kwargs...)
-
     flags = makeflags(opts, :tetgen)
 
     if opts[:verbose]
@@ -16,7 +15,7 @@ function ExtendableGrids.simplexgrid(::Type{TetGenType}, TetGen, input; kwargs..
     end
 
     if !isnothing(opts[:unsuitable])
-        TetGen.tetunsuitable!(opts[:unsuitable])
+        set_unsuitable!(TetGenType, TetGen, opts[:unsuitable])
     end
 
     tetout = TetGen.tetrahedralize(input, flags)
