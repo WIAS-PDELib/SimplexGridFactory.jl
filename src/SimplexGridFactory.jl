@@ -5,16 +5,16 @@ $(read(joinpath(@__DIR__, "..", "README.md"), String))
 """
 module SimplexGridFactory
 
-using Printf: @sprintf
-using LinearAlgebra: norm, det
 
-using ElasticArrays: ElasticArray
-import ExtendableGrids
-using ExtendableGrids: dim_space, Coordinates, BFaceNodes, BFaceRegions, simplexgrid, BinnedPointList
 using DocStringExtensions: SIGNATURES, TYPEDEF, TYPEDSIGNATURES
-using GridVisualize: GridVisualize, GridVisualizer, plot_triangulateio!
+using ElasticArrays: ElasticArray
+using ExtendableGrids: ExtendableGrids, dim_space, Coordinates, BFaceNodes, BFaceRegions, simplexgrid, BinnedPointList
 using FileIO: load
-import MeshIO
+using GridVisualize: GridVisualize, GridVisualizer, plot_triangulateio!
+using LinearAlgebra: norm, det
+using MeshIO: MeshIO
+using Printf: @sprintf
+using StaticArrays: @MArray
 
 include("utils.jl")
 
