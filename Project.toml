@@ -19,7 +19,7 @@ TetGen = "c5d3f3f7-f850-59f6-8a2e-ffc6dc1317ea"
 Triangulate = "f7e6ffb2-c36d-4f8f-a77e-16e897189344"
 
 [compat]
-DocStringExtensions = "0.8,0.9"
+DocStringExtensions = "0.8,0.9,0.10"
 ElasticArrays = "^1.2"
 ExtendableGrids = "1.6"
 FileIO = "1"
